@@ -1,0 +1,23 @@
+networks:
+  shared:
+    driver: bridge
+
+services:
+  otel-collector:
+    image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.103.1
+    ports:
+      - 4317:4317
+    networks:
+      - shared
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel/configs/config.yaml
+    command:
+      - '--config'
+      - '/etc/otel/configs/config.yaml'
+
+  dotnet-aspire:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:8.0.0
+    networks:
+      - shared
+    ports:
+      - 18888:18888
